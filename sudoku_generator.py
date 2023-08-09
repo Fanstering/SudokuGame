@@ -11,6 +11,7 @@ class SudokuGenerator:
         self._generate_solution()  # 生成完整解的数独谜题
         # 保留原矩阵备份
         self.solution = copy.deepcopy(self.board)
+        print(self.solution)
 
         self._remove_cells(difficulty)  # 根据难度级别移除部分格子
 
