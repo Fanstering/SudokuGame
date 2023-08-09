@@ -16,10 +16,22 @@ class SudokuGenerator:
         self._remove_cells(difficulty)  # 根据难度级别移除部分格子
 
     def _generate_solution(self):
+
         for i in range(9):
             for j in range(9):
                 self.board[i][j] = 0  # 初始化数独面板
 
+        def shuffle(arr):
+            # 随机洗牌数组的元素
+            n = len(arr)
+            for i in range(n - 1, 0, -1):
+                j = random.randint(0, i)
+                arr[i], arr[j] = arr[j], arr[i]
+
+        # 填充第一行，然后根据规则生成其他行
+        first_row = [i + 1 for i in range(9)]
+        shuffle(first_row)
+        self.board[0] = first_row
         self._fill_cells()
 
     def _fill_cells(self):
