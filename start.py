@@ -25,7 +25,7 @@ class SudokuGUI:
         self.sudoku_panel = tk.Frame(main_panel, width=cell_size * 9, height=cell_size * 9, bg='white')
         self.sudoku_panel.pack(side=tk.LEFT)
 
-        button_panel = tk.Frame(main_panel, width=panel_size - cell_size * 9, height=cell_size * 9, bg='lightgray',
+        button_panel = tk.Frame(main_panel, width=panel_size - cell_size * 9, height=cell_size * 9,
                                 padx=10, pady=10)
         button_panel.pack(side=tk.LEFT)
 
@@ -63,15 +63,15 @@ class SudokuGUI:
         button_width = 15  # 设置按钮的宽度
         button_height = 2  # 设置按钮的高度
 
-        solve_button = tk.Button(panel, text="解答", command=self.check_solution, fg='blue',
+        solve_button = tk.Button(panel, text="解答", command=self.check_solution, bg='#DDEEDD',fg='blue',bd=4,
                                  width=button_width, height=button_height)
         solve_button.pack(pady=10)
 
-        generate_button = tk.Button(panel, text="生成数独", command=self.show_difficulty_dialog, fg='green',
+        generate_button = tk.Button(panel, text="生成数独", command=self.show_difficulty_dialog, bg='#DDEEDD',fg='green',bd=4,
                                     width=button_width, height=button_height)
         generate_button.pack(pady=10)
 
-        solve_auto_button = tk.Button(panel, text="自动解答", command=self.solve_and_show_solution, bg='purple', fg='white',
+        solve_auto_button = tk.Button(panel, text="自动解答", command=self.solve_and_show_solution, bg='#DDEEDD', fg='purple',bd=4,
                                       width=button_width, height=button_height)
         solve_auto_button.pack(pady=10)
 
