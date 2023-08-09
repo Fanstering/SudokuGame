@@ -29,8 +29,23 @@ class SudokuGUI:
                                 padx=10, pady=10)
         button_panel.pack(side=tk.LEFT)
 
+        # 获取 self.root 的总尺寸
+        root_width = main_panel.winfo_reqwidth()
+        root_height = main_panel.winfo_reqheight()
+
+        # 计算屏幕中央位置
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        x_position = (screen_width - root_width) // 2
+        y_position = (screen_height - root_height) // 2
+
+        self.root.geometry(f"+{x_position}+{y_position}")  # 设置窗口尺寸和位置
+
+
         self.create_sudoku_board(self.sudoku_panel)
         self.create_buttons(button_panel)
+
+
 
     # 创建数独面板
     def create_sudoku_board(self, panel):
@@ -57,30 +72,40 @@ class SudokuGUI:
             return True
         return False
 
-
     # 创建按钮模块
     def create_buttons(self, panel):
         button_width = 15  # 设置按钮的宽度
         button_height = 2  # 设置按钮的高度
 
-        solve_button = tk.Button(panel, text="解答", command=self.check_solution, bg='#DDEEDD',fg='blue',bd=4,
+        solve_button = tk.Button(panel, text="解答", command=self.check_solution, bg='#DDEEDD', fg='blue', bd=4,
                                  width=button_width, height=button_height)
         solve_button.pack(pady=10)
 
-        generate_button = tk.Button(panel, text="生成数独", command=self.show_difficulty_dialog, bg='#DDEEDD',fg='green',bd=4,
+        generate_button = tk.Button(panel, text="生成数独", command=self.show_difficulty_dialog, bg='#DDEEDD', fg='green',
+                                    bd=4,
                                     width=button_width, height=button_height)
         generate_button.pack(pady=10)
 
-        solve_auto_button = tk.Button(panel, text="自动解答", command=self.solve_and_show_solution, bg='#DDEEDD', fg='purple',bd=4,
+        solve_auto_button = tk.Button(panel, text="自动解答", command=self.solve_and_show_solution, bg='#DDEEDD',
+                                      fg='purple', bd=4,
                                       width=button_width, height=button_height)
         solve_auto_button.pack(pady=10)
-
-
 
     # 生成谜题模块
     def show_difficulty_dialog(self):
         difficulty_window = tk.Toplevel(self.root)
         difficulty_window.title("选择难度")
+
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+
+        window_width = 300
+        window_height = 150
+
+        x_position = (screen_width - window_width) // 2
+        y_position = (screen_height - window_height) // 2
+
+        difficulty_window.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
 
         self.difficulty_var = tk.StringVar()
         self.difficulty_var.set('easy')
@@ -110,7 +135,6 @@ class SudokuGUI:
 
         self.create_sudoku_board(self.sudoku_panel)  # 创建新的数独面板
 
-
     # 验证模块
     def check_solution(self):
         user_solution = [[0 for _ in range(9)] for _ in range(9)]
@@ -135,8 +159,6 @@ class SudokuGUI:
                 if user_solution[i][j] != self.generator.board[i][j]:
                     return False
         return True
-
-
 
     # 自动解迷模块
     def solve_and_show_solution(self):
