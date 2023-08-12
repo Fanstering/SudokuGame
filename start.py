@@ -11,6 +11,7 @@ class SudokuGUI:
         self.generator = SudokuGenerator()
         self.generator.generate('easy')
         self.board = self.generator.board
+        self.solution_window = None  # 自动解答窗口
 
         self.create_main_panel()
 
@@ -111,6 +112,7 @@ class SudokuGUI:
                                       width=button_width, height=button_height)
         solve_auto_button.pack(pady=10)
 
+
     # 生成谜题模块
     def show_difficulty_dialog(self):
         difficulty_window = tk.Toplevel(self.root)
@@ -176,9 +178,10 @@ class SudokuGUI:
     def is_solution_correct(self, user_solution):
         for i in range(9):
             for j in range(9):
-                if user_solution[i][j] != self.generator.board[i][j]:
+                if user_solution[i][j] != self.generator.solve_sudoku()[i][j]:
                     return False
         return True
+
 
     # 自动解迷模块
     def solve_and_show_solution(self):
@@ -189,18 +192,28 @@ class SudokuGUI:
             messagebox.showinfo("提示", "无解")
 
     def show_solution_window(self, solved_board):
-        solution_window = tk.Toplevel(self.root)
-        solution_window.title("数独解答")
+        if self.solution_window is None:
+            solution_window = self.solution_window = tk.Toplevel(self.root)
+            solution_window.title("数独解答")
 
-        cell_size = 50
 
-        for i in range(9):
-            for j in range(9):
-                value = solved_board[i][j]
-                bg_color = 'white' if self.board[i][j] == value else 'lightgray'
-                entry = tk.Label(solution_window, text=str(value), font=('Helvetica', 24), width=2, height=1,
-                                 bg=bg_color)
-                entry.grid(row=i, column=j, padx=1, pady=1)
+            for i in range(9):
+                for j in range(9):
+                    value = solved_board[i][j]
+                    bg_color = 'white' if self.board[i][j] == value else 'lightgray'
+                    entry = tk.Label(solution_window, text=str(value), font=('Helvetica', 24), width=2, height=1,
+                                     bg=bg_color)
+                    entry.grid(row=i, column=j, padx=1, pady=1)
+
+            # 在窗口关闭时设置回调函数
+            self.solution_window.protocol("WM_DELETE_WINDOW", self.on_auto_solve_window_close)
+        else:
+            messagebox.showinfo("提示", "窗口已存在")
+
+    def on_auto_solve_window_close(self):
+        # 窗口关闭时，重置 self.auto_solve_window 为 None
+        self.solution_window.destroy()
+        self.solution_window = None
 
 
 def main():
