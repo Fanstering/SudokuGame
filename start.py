@@ -17,12 +17,13 @@ class SudokuGUI:
     #  创建主面板
     def create_main_panel(self):
         panel_size = 500  # 整体面板大小
-        cell_size = (panel_size - 9) // 9  # 计算格子大小，减去9个间距
+        cell_size = (panel_size) // 9  # 计算格子大小，减去9个间距
 
         main_panel = tk.Frame(self.root, width=panel_size, height=panel_size)
         main_panel.pack()
 
-        self.sudoku_panel = tk.Frame(main_panel, width=cell_size * 9, height=cell_size * 9, bg='white')
+        # self.sudoku_panel = tk.Frame(main_panel, width=cell_size * 9, height=cell_size * 9, bg='white')
+        self.sudoku_panel = tk.Canvas(main_panel, width=cell_size * 9, height=cell_size * 9, bg='white')
         self.sudoku_panel.pack(side=tk.LEFT)
 
         button_panel = tk.Frame(main_panel, width=panel_size - cell_size * 9, height=cell_size * 9,
@@ -45,6 +46,21 @@ class SudokuGUI:
         self.create_sudoku_board(self.sudoku_panel)
         self.create_buttons(button_panel)
 
+        self.draw_grid(self.sudoku_panel, cell_size/1.31)  # 画出不重叠的3x3小方格和黑色粗线
+
+    def draw_grid(self, panel, cell_size):
+        for i in range(1, 9):
+            if i % 3 == 0:
+                line_width = 3
+            else:
+                line_width = 0
+
+            # 画横线
+            panel.create_line(0, i * cell_size, 9 * cell_size, i * cell_size, width=line_width)
+
+            # 画竖线
+            panel.create_line(i * cell_size, 0, i * cell_size, 9 * cell_size, width=line_width)
+
 
 
     # 创建数独面板
@@ -65,6 +81,10 @@ class SudokuGUI:
                 self.entry_grid[i][j] = entry  # 将Entry添加到二维数组中
                 if value == 0:
                     entry.configure(background='lightgray')  # 如果值为0，将空缺位置的背景颜色设置为灰色
+                # print(entry.winfo_width(),entry.winfo_height())
+
+
+
 
     # 验证输入
     def validate_input(self, new_value):
